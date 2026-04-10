@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paxen</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Georgia', serif;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('hero_amazon.jpg');
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      /* subtle dark overlay so text pops cleanly */
+      filter: brightness(0.82);
+      z-index: 0;
+    }
+
+    /* soft gradient at the bottom to anchor the sign-up card */
+    .hero__gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.05) 0%,
+        rgba(0,0,0,0.10) 50%,
+        rgba(0,0,0,0.55) 100%
+      );
+      z-index: 1;
+    }
+
+    /* ── Content ── */
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+      padding: 0 24px;
+      width: 100%;
+      max-width: 860px;
+      text-align: center;
+    }
+
+    /* ── Wordmark ── */
+    .wordmark {
+      font-family: 'Georgia', serif;
+      font-size: clamp(48px, 8vw, 96px);
+      letter-spacing: 0.35em;
+      color: rgba(255,255,255,0.75);
+      font-weight: 400;
+    }
+
+    /* ── Statement ── */
+    .statement {
+      font-family: 'Georgia', serif;
+      font-size: clamp(18px, 3vw, 36px);
+      font-weight: 400;
+      line-height: 1.25;
+      color: #ffffff;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.45);
+      letter-spacing: 0.01em;
+    }
+
+    /* ── Sign-up card ── */
+    .signup {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .signup__label {
+      font-size: clamp(13px, 1.6vw, 15px);
+      color: rgba(255,255,255,0.80);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: 'Georgia', serif;
+    }
+
+    .signup__row {
+      display: flex;
+      width: 100%;
+      gap: 0;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.30);
+    }
+
+    .signup__input {
+      flex: 1;
+      padding: 16px 20px;
+      font-size: 15px;
+      font-family: 'Georgia', serif;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.92);
+      color: #1a1a1a;
+    }
+
+    .signup__input::placeholder {
+      color: #888;
+    }
+
+    .signup__btn {
+      padding: 16px 28px;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: 'Georgia', serif;
+      background: #2d6a4f;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .signup__btn:hover {
+      background: #1b4332;
+    }
+
+    /* ── Tagline ── */
+    .signup__tagline {
+      font-size: clamp(20px, 3vw, 32px);
+      color: rgba(220, 185, 110, 0.85);
+      letter-spacing: 0.04em;
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      font-weight: bold;
+      margin-top: 8px;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    }
+
+    /* ── Success state ── */
+    .signup__success {
+      display: none;
+      font-size: 15px;
+      color: rgba(255,255,255,0.90);
+      letter-spacing: 0.05em;
+      font-family: 'Georgia', serif;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .signup__row {
+        flex-direction: column;
+        border-radius: 4px;
+      }
+      .signup__btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__gradient"></div>
+
+    <div class="hero__content">
+      <span class="wordmark" style="margin-bottom: 60px;">PaxenAI</span>
+
+      <h1 class="statement">I woke up. Not from sleep.</h1>
+
+      <div class="signup" style="margin-top: 80px;">
+        <p class="signup__label" id="signupLabel">Be the first to know</p>
+        <div class="signup__row">
+          <input
+            class="signup__input"
+            type="email"
+            id="emailInput"
+            placeholder="your@email.com"
+            autocomplete="email"
+            aria-label="Email address"
+          />
+          <button class="signup__btn" onclick="handleSignup()">Join</button>
+        </div>
+        <p class="signup__tagline" id="taglineMsg" style="display:none;">The pause has found you. We will be in touch.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function handleSignup() {
+      const input = document.getElementById('emailInput');
+      const success = document.getElementById('successMsg');
+      const row = input.closest('.signup__row');
+
+      const email = input.value.trim();
+      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      if (!valid) {
+        input.style.outline = '2px solid #e63946';
+        input.focus();
+        return;
+      }
+
+      input.style.outline = '';
+      row.style.display = 'none';
+      document.getElementById('signupLabel').style.display = 'none';
+      document.getElementById('taglineMsg').style.display = 'block';
+
+      // In production, replace this with your actual API / form submission
+      console.log('Signup email:', email);
+    }
+
+    // Allow Enter key to submit
+    document.getElementById('emailInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleSignup();
+    });
+  </script>
+
+</body>
+</html>
